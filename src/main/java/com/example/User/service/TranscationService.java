@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.User.Repository.AccountRepository;
+import com.example.User.Repository.TranscationRepository;
 import com.example.User.entity.Account;
 import com.example.User.entity.Transcation;
+import com.example.User.model.TranscationRequest;
 
 @Service
 public class TranscationService  {
@@ -15,10 +17,13 @@ public class TranscationService  {
 	private AccountRepository accountRepository;
 	@Autowired
 	private AccountService accountService;
-
-	public Transcation transferMoney(Double amount, String senderAccountNumber, String receiverAccountNumber) {
+	@Autowired
+	private TranscationRepository transcationRepository;
+	
+	public TranscationRequest transferMoney(Double amount, String senderAccountNumber, String receiverAccountNumber) {
 	    Account senderAccount = accountRepository.findByAccountNumber(senderAccountNumber);
 	    Account receiverAccount = accountRepository.findByAccountNumber(receiverAccountNumber);
+	    TranscationRequest transcationRequest = new TranscationRequest();
 	    if(senderAccount == null || receiverAccount == null) {
 	        return null;
 	    }
@@ -34,7 +39,11 @@ public class TranscationService  {
 	    transcation.setSenderAccountNumber(senderAccount);
 	    transcation.setReceiverAccountNumber(receiverAccount);
 	    transcation.setTimestamp(new Date());
-	    return transcation;
+	   Transcation transcation2 = transcationRepository.save(transcation);
+	  transcationRequest.setReceiverAccountNumber(transcation2.getReceiverAccountNumber().getAccountNumber());
+	  transcationRequest.setSenderAccountNumber(transcation2.getSenderAccountNumber().getAccountNumber());
+	  transcationRequest.setAmount(transcation2.getAmount());
+	    return transcationRequest;
 	}
 
 	

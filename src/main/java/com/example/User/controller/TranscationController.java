@@ -19,8 +19,8 @@ public class TranscationController {
 	private TranscationService transcationService;
 	
 	@PostMapping("/transferMoney")
-	public ResponseEntity<Transcation> transferMoney(@RequestBody TranscationRequest request){
-		Transcation transcation = transcationService
+	public ResponseEntity<TranscationRequest> transferMoney(@RequestBody TranscationRequest request){
+		TranscationRequest transcation = transcationService
 				.transferMoney(request.getAmount(),request.getSenderAccountNumber(),request.getReceiverAccountNumber());
 		if(transcation != null) {
 			return ResponseEntity.ok(transcation);

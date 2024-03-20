@@ -8,19 +8,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.User.service.UserDetailsServiceImplementation;
 import com.example.User.util.JwtUtil;
 
+@Component
 public class JwtRequestFilter extends OncePerRequestFilter{
 	@Autowired
 	private UserDetailsServiceImplementation userDetailsServiceImplementation;
-	
+	@Autowired
 	private JwtUtil jwtUtil;
 
 	@Override
@@ -35,7 +39,7 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 	            username = jwtUtil.extractUsername(token);
 	        }
 
-	        if (username != null && SecurityContextHolder.getContext().getAuthentication() != null) {  //here I have changed == to !=
+	        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {  //here I have changed == to !=
 	            UserDetails userDetails = userDetailsServiceImplementation.loadUserByUsername(username);
 
 	            if (jwtUtil.validateToken(token, userDetails)) {

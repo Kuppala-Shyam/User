@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping("/hello")
+	@GetMapping("/hello/{email}")
 	public String hello() {
 		return "hello from Jwt Authorization";
 	}
@@ -39,6 +40,12 @@ public class UserController {
 	public User updateUserdetails(@PathVariable("email") String email, User user) {
 		return userService.updateUserdetails(email,user);
 		
+	}
+	
+	@DeleteMapping("/deleteUserdetails/{email}")
+	public String deleteUserDetails(@PathVariable("email") String email) {
+		userService.deleteUserDetails(email);
+		return "User details deleted successfully";
 	}
 	
 }

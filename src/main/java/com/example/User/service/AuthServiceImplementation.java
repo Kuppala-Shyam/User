@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.User.Exception.AccessDeniedException;
 import com.example.User.Repository.UserRepository;
 import com.example.User.entity.User;
 import com.example.User.model.SignUp;
@@ -41,4 +42,5 @@ public class AuthServiceImplementation implements AuthService {
         userModel.setLastName(createdUser.getLastName());
         return userModel;
     }
+
 }
